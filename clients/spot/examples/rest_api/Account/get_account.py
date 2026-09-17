@@ -1,9 +1,10 @@
 import os
 import logging
+from datetime import datetime
 
 from binance_sdk_spot.spot import Spot, ConfigurationRestAPI, SPOT_REST_API_PROD_URL
-
-
+from dotenv import load_dotenv
+load_dotenv()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
@@ -20,7 +21,7 @@ client = Spot(config_rest_api=configuration_rest_api)
 
 def get_account():
     try:
-        response = client.rest_api.get_account()
+        response = client.rest_api.get_account(omit_zero_balances=True,recv_window=10000)
 
         rate_limits = response.rate_limits
         logging.info(f"get_account() rate limits: {rate_limits}")
